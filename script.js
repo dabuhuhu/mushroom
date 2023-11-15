@@ -1,21 +1,19 @@
 const mushroom = document.querySelector('.mushroom');
-let timeout;
+let growTimeout;
+let clickCount = 0;
 
 mushroom.addEventListener('click', function() {
-    this.style.animation = 'spin 0.5s linear';
-    setTimeout(() => this.style.animation = '', 500);
+    clearTimeout(growTimeout);
+    clickCount++;
 
-    const maxX = window.innerWidth - this.offsetWidth;
-    const maxY = window.innerHeight - this.offsetHeight;
-    const randomX = Math.random() * maxX;
-    const randomY = Math.random() * maxY;
+    if (clickCount >= 3) {
+        this.style.transform = 'scale(1)';
+        clickCount = 0;
+    } else {
+        this.style.transform = 'scale(1.2)';
+    }
 
-    this.style.left = randomX + 'px';
-    this.style.top = randomY + 'px';
-
-    clearTimeout(timeout);
-    timeout = setTimeout(() => {
-        this.style.left = '0px';
-        this.style.top = '0px';
-    }, 5000);
+    growTimeout = setTimeout(() => {
+        this.style.transform = 'scale(1)';
+    }, 3000);
 });
