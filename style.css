@@ -6,13 +6,15 @@ body, html {
     background-color: #f0f0f0;
 }
 
-.mushroom {
+.emoji {
     position: absolute;
     font-size: 30px;
-    animation: fall linear;
+    animation-name: fall;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards; /* Ensures the emoji stays at the bottom */
 }
 
 @keyframes fall {
-    from { top: -50px; }
-    to { top: 100%; }
+    0% { top: -50px; }
+    100% { top: 100%; }
 }

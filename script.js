@@ -10,6 +10,7 @@ function createEmoji() {
     emoji.textContent = currentEmoji;
     emoji.style.left = Math.random() * window.innerWidth + 'px';
     emoji.style.animationDuration = (Math.random() * 5 + 5) + 's'; // Random duration between 5 to 10 seconds
+    emoji.addEventListener('animationend', () => emoji.remove()); // Remove emoji after falling
     document.body.appendChild(emoji);
 }
 
