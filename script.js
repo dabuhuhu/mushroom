@@ -1,57 +1,41 @@
-const mushroom = document.querySelector('.mushroom');
-let secondMushroomAdded = false;
+let mushrooms = [];
+const mushroomEmoji = '🍄';
+let mushroomCount = 1;
 
-function getRandomPosition(element) {
-    const maxX = window.innerWidth - element.offsetWidth;
-    const maxY = window.innerHeight - element.offsetHeight;
-    return { x: Math.random() * maxX, y: Math.random() * maxY };
+function createMushroom() {
+    const mushroom = document.createElement('div');
+    mushroom.className = 'mushroom';
+    mushroom.textContent = mushroomEmoji;
+    mushroom.style.left = Math.random() * window.innerWidth + 'px';
+    mushroom.style.animationDuration = (Math.random() * 5 + 5) + 's'; // Random duration between 5 to 10 seconds
+    document.body.appendChild(mushroom);
+    mushrooms.push(mushroom);
 }
 
-function moveElement(element) {
-    const { x, y } = getRandomPosition(element);
-    element.style.left = x + 'px';
-    element.style.top = y + 'px';
-}
-
-function resizeElement(element) {
-    const scale = Math.random() > 0.5 ? 1.2 : 0.8;
-    element.style.transform = `scale(${scale})`;
-}
-
-function addSecondMushroom() {
-    if (secondMushroomAdded) return;
-
-    const newMushroom = mushroom.cloneNode(true);
-    document.body.appendChild(newMushroom);
-    moveElement(newMushroom);
-    secondMushroomAdded = true;
-}
-
-mushroom.addEventListener('mouseenter', function() {
-    if (Math.random() > 0.7) {
-        moveElement(this);
-    } else {
-        resizeElement(this);
+function doubleMushrooms() {
+    for (let i = 0; i < mushroomCount; i++) {
+        createMushroom();
     }
+    mushroomCount *= 2;
+}
 
-    if (Math.random() > 0.9) {
-        addSecondMushroom();
+function resetPosition() {
+    mushrooms.forEach(mushroom => {
+        if (parseInt(mushroom.style.top) > window.innerHeight) {
+            mushroom.style.top = '-50px';
+            mushroom.style.left = Math.random() * window.innerWidth + 'px';
+        }
+    });
+}
+
+document.body.addEventListener('click', doubleMushrooms);
+document.body.addEventListener('keydown', function(e) {
+    if (e.key === ' ') {
+        doubleMushrooms();
     }
 });
 
-mushroom.addEventListener('click', function() {
-    this.style.transform = 'scale(1)';
-    this.style.left = '50%';
-    this.style.top = '50%';
-    this.style.transform = 'translate(-50%, -50%)';
-});
+setInterval(resetPosition, 100);
 
-// Apply the same logic to the second mushroom if it exists
-document.body.addEventListener('click', function(e) {
-    if (e.target !== mushroom && e.target.className === 'mushroom') {
-        e.target.style.transform = 'scale(1)';
-        e.target.style.left = '50%';
-        e.target.style.top = '50%';
-        e.target.style.transform = 'translate(-50%, -50%)';
-    }
-});
+// Start with one mushroom
+createMushroom();
